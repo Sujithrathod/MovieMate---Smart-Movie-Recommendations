@@ -43,11 +43,12 @@ else:
 
 def fetch_movie_details(movie_id):
     try:
-       url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}"
-       response = http.get(url,timeout=10)
-       response.raise_for_status()
-       data = response.json()
-       return {
+        headers = {"Authorization": f"Bearer {api_key}"}
+        url = f"https://api.themoviedb.org/3/movie/{movie_id}"
+        response = http.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        return {
             'poster_path': "https://image.tmdb.org/t/p/w500/" + data.get('poster_path', ''),
             'overview': data.get('overview', 'No overview available'),
             'release_date': data.get('release_date', 'Release date unknown'),
