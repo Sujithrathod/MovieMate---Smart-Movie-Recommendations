@@ -69,18 +69,18 @@ def recommend(movie):
     try:
         movie_index = movies_list[movies_list['title'] == movie].index[0]
         distances = similarity[movie_index]
-        movies_list_recommended = sorted(list(enumerate(distances)), reverse=True)
+        movies_list_recommended = sorted(list(enumerate(distances)), reverse=True)[1:6]  # Skip the first (itself)
         
-        recommended_movies = []
-        recommendend_details = []
+        recommended_names = []
+        recommended_details = []
         
         for i in movies_list_recommended:
             movie_id = movies_list.iloc[i[0]].movie_id
-            recommended_movies.append(movies_list.iloc[i[0]].title)
-            recommended_movies.append(fetch_movie_details(movie_id))
-        return recommended_movies, recommendend_details
+            recommended_names.append(movies_list.iloc[i[0]].title)
+            recommended_details.append(fetch_movie_details(movie_id))
+        return recommended_names, recommended_details
     except Exception as e:
-        st.error(f"Error generating recommandations : {str(e)}")
+        st.error(f"Error generating recommendations : {str(e)}")
         return [],[]
 
 selected_movie = st.selectbox(
