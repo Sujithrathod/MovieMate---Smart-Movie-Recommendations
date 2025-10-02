@@ -39,7 +39,7 @@ if 'TMDB_API_KEY' in st.secrets:
     api_key = st.secrets['TMDB_API_KEY']
 else:
     load_dotenv()
-    api_key = os.getenv("API_KEY")    
+    api_key = os.getenv("TMDB_API_KEY")    
 
 def fetch_movie_details(movie_id):
     try:
