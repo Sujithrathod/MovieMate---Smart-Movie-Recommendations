@@ -43,9 +43,8 @@ else:
 
 def fetch_movie_details(movie_id):
     try:
-        headers = {"Authorization": f"Bearer {api_key}"}
-        url = f"https://api.themoviedb.org/3/movie/{movie_id}"
-        response = http.get(url, headers=headers, timeout=10)
+        url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}"
+        response = http.get(url, timeout=10)
         response.raise_for_status()
         data = response.json()
         return {
