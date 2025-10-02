@@ -87,7 +87,15 @@ def recommend(movie):
     try:
         movie_index = movies_list[movies_list['title'] == movie].index[0]
         distances = similarity[movie_index]
+        
+        # Add debug logging
+        st.write(f"Debug - Movie Index: {movie_index}")
+        st.write(f"Debug - First few similarity scores: {distances[:5]}")
+        
         movies_list_recommended = sorted(list(enumerate(distances)), reverse=True)[1:6]  # Skip the first (itself)
+        
+        # Add debug logging for recommended movies
+        st.write(f"Debug - Recommended movie indices: {[i[0] for i in movies_list_recommended]}")
         
         recommended_names = []
         recommended_details = []
