@@ -14,12 +14,12 @@ retry_strategy = Retry(
     backoff_factor = 1,
     status_forcelist = [500,502,503,504]
 )
-"""
-500: Internal Server Error
-502: Bad Gateway
-503: Service Unavailable
-504: Gateway Timeout
-"""
+
+# 500: Internal Server Error
+# 502: Bad Gateway
+# 503: Service Unavailable
+# 504: Gateway Timeout
+
 http = requests.Session()
 http.mount("https://",HTTPAdapter(max_retries=retry_strategy))
 
