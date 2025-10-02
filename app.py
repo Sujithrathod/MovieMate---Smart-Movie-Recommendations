@@ -23,7 +23,7 @@ retry_strategy = Retry(
 http = requests.Session()
 http.mount("https://",HTTPAdapter(max_retries=retry_strategy))
 
-st.title("MovieMate - Smart Movie Recommendations")
+st.title("Movie Recommender System")
 
 # Load data
 try:
