@@ -41,22 +41,43 @@ else:
     load_dotenv()
     api_key = os.getenv("TMDB_API_KEY")    
 
+if not api_key:
+    st.error("TMDB API key is not configured. Please check your environment variables or secrets.")
+    st.stop()
+
 def fetch_movie_details(movie_id):
+    if not api_key:
+        return {
+            'poster_path': "https://via.placeholder.com/500x750?text=No+API+Key",
+            'overview': "API key not configured",
+            'release_date': "Unknown",
+            'rating': 0.0,
+            'runtime': "N/A"
+        }
+    
     try:
         url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}"
-        response = http.get(url, timeout=10)
+        headers = {
+            "Accept": "application/json",
+            "Authorization": f"Bearer {api_key}"
+        }
+        response = http.get(url, headers=headers, timeout=10)
         response.raise_for_status()
         data = response.json()
+        
+        poster_path = data.get('poster_path')
+        poster_url = "https://image.tmdb.org/t/p/w500/" + poster_path if poster_path else "https://via.placeholder.com/500x750?text=No+Image+Available"
+        
         return {
-            'poster_path': "https://image.tmdb.org/t/p/w500/" + data.get('poster_path', ''),
+            'poster_path': poster_url,
             'overview': data.get('overview', 'No overview available'),
             'release_date': data.get('release_date', 'Release date unknown'),
             'rating': round(data.get('vote_average', 0), 1),
             'runtime': data.get('runtime', 'N/A')
-       }
+        }
     except requests.exceptions.RequestException as e:
         st.warning(f"Could not fetch details for movie ID {movie_id}. Error: {str(e)}")
-        return{
+        return {
             'poster_path': "https://via.placeholder.com/500x750?text=No+Image+Available",
             'overview': "Unable to fetch movie details",
             'release_date': "Unknown",
